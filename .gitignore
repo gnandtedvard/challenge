@@ -1,0 +1,32 @@
+# IDE generated files
+*.user
+*.user.*
+.vscode
+.idea
+tags
+
+# OS generated files
+.DS_Store
+
+# Temporary files
+*.swp
+*~
+*.autosave
+
+# Merge leftovers
+*.orig
+*.BACKUP*
+*.BASE*
+*.LOCAL*
+*.REMOTE*
+
+# Build/Compiler generated files
+build
+*.so
+*.a
+*.dll
+*.lib
+*.pyc
+*.gcda
+*.gcno
+
