@@ -4,18 +4,23 @@ Item {
     id: root
 
     property alias dispatcher: logicConnection.target
-    readonly property var currentLocation: !!internal.previousLocations && internal.previousLocations.length > 0 ? internal.previousLocations[0] : undefined
+    readonly property var currentLocation: internal.currentLocation
     readonly property var previousLocations: internal.previousLocations
     readonly property var geolocationSearchResults: internal.geolocationSearchResults
+
+    onCurrentLocationChanged: {
+        appLogic.updateWeatherData(currentLocation);
+    }
 
     Connections {
         id: logicConnection
 
         function onInitialize() {
+            if (!!appStorage.getValue(appStorage.currentLocationStorageKey)) {
+                internal.currentLocation = appStorage.getValue(appStorage.currentLocationStorageKey);
+            }
             if (!!appStorage.getValue(appStorage.previousLocationsStorageKey)) {
                 internal.previousLocations = appStorage.getValue(appStorage.previousLocationsStorageKey);
-            } else {
-                internal.previousLocations = [];
             }
         }
 
@@ -28,6 +33,8 @@ Item {
         }
 
         function onUpdateCurrentLocation(location) {
+            internal.currentLocation = location;
+            appStorage.setValue(appStorage.currentLocationStorageKey, location);
             if (!internal.previousLocations.some((place) => place.place_id === location.place_id)) {
                 internal.previousLocations.push(location);
                 if (internal.previousLocations.length > appStorage.maxPreviousLocationsCount) {
@@ -50,6 +57,7 @@ Item {
     QtObject {
         id: internal
 
+        property var currentLocation: undefined
         property var previousLocations: []
         property var geolocationSearchResults: []
 

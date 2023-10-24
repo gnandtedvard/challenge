@@ -5,6 +5,14 @@ Page {
     id: root
 
     title: "Set up location"
+    leftBarItem: IconButtonBarItem {
+      color: "#FFFFFF"
+      icon: IconType.close
+
+      onClicked: {
+        searchLocationModal.close()
+      }
+    }
 
     AppTextField {
         id: textInput
@@ -42,6 +50,7 @@ Page {
 
             onSelected: {
                 appLogic.updateCurrentLocation({place_id: modelData.place_id, display_name: modelData.display_name, lat: modelData.lat, lon: modelData.lon});
+                searchLocationModal.close();
             }
         }
     }
@@ -60,4 +69,11 @@ Page {
         }
     }
 
+    function reset() {
+        textInput.clear();
+    }
+
+    function openKeyboard() {
+        textInput.forceActiveFocus();
+    }
 }
