@@ -6,20 +6,40 @@ Item {
     property alias dispatcher: logicConnection.target
     readonly property var currentLocation: !!internal.previousLocations && internal.previousLocations.length > 0 ? internal.previousLocations[0] : undefined
     readonly property var previousLocations: internal.previousLocations
+    readonly property var geolocationSearchResults: internal.geolocationSearchResults
 
     Connections {
         id: logicConnection
+
+        function onInitialize() {
+            if (!!appStorage.getValue(appStorage.previousLocationsStorageKey)) {
+                internal.previousLocations = appStorage.getValue(appStorage.previousLocationsStorageKey);
+            } else {
+                internal.previousLocations = [];
+            }
+        }
 
         function onGeocodeSearch(input) {
             restAPI.geocodeSearch(input, internal.geocodeSearchSuccess, internal.geocodeSeachError());
         }
 
-        function onUpdateCurrentLocation(location) {
+        function onClearGeocodeSearchResults() {
+            internal.geolocationSearchResults = [];
+        }
 
+        function onUpdateCurrentLocation(location) {
+            if (!internal.previousLocations.some((place) => place.place_id === location.place_id)) {
+                internal.previousLocations.push(location);
+                if (internal.previousLocations.length > appStorage.maxPreviousLocationsCount) {
+                    internal.previousLocations = internal.previousLocations.slice(1);
+                }
+                appStorage.setValue(appStorage.previousLocationsStorageKey, internal.previousLocations);
+                root.previousLocationsChanged();
+            }
         }
 
         function onUpdateWeatherData() {
-            restAPI.getCurrentWeatherCondition(currentLocation.latitude + ", " + currentLocation.longitude, internal.currentWeatherConditionSuccess, internal.currentWeatherConditionError);
+            restAPI.getCurrentWeatherCondition(currentLocation.lat + ", " + currentLocation.lon, internal.currentWeatherConditionSuccess, internal.currentWeatherConditionError);
         }
     }
 
@@ -31,13 +51,15 @@ Item {
         id: internal
 
         property var previousLocations: []
+        property var geolocationSearchResults: []
 
         function geocodeSearchSuccess(results) {
             console.log("Geocode request success!", JSON.stringify(results));
+            internal.geolocationSearchResults = results;
         }
 
         function geocodeSeachError(err) {
-            console.log("Geocode request failed!", err.message);
+            console.log("Geocode request failed!", err);
         }
 
         function currentWeatherConditionSuccess(results) {
