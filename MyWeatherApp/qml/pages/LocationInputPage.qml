@@ -5,8 +5,8 @@ Page {
     id: root
 
     title: "Set up location"
+
     leftBarItem: IconButtonBarItem {
-      color: "#FFFFFF"
       icon: IconType.close
 
       onClicked: {
@@ -29,6 +29,8 @@ Page {
     }
 
     JsonListModel {
+        id: locationModel
+
         source: textInput.activeFocus && textInput.text === "" ? appModel.previousLocations : appModel.geolocationSearchResults
         fields: ["place_id", "display_name", "lat", "lon"]
         keyField: "place_id"
@@ -44,12 +46,12 @@ Page {
             bottom: parent.bottom
             bottomMargin: dp(20)
         }
-        model: textInput.activeFocus && textInput.text === "" ? appModel.previousLocations : appModel.geolocationSearchResults
+        model: locationModel
         delegate: AppListItem {
-            text: modelData.display_name
+            text: display_name
 
             onSelected: {
-                appLogic.updateCurrentLocation({place_id: modelData.place_id, display_name: modelData.display_name, lat: modelData.lat, lon: modelData.lon});
+                appLogic.updateCurrentLocation({place_id: place_id, display_name: display_name, lat: lat, lon: lon});
                 searchLocationModal.close();
             }
         }

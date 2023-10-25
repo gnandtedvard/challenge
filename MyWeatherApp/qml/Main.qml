@@ -3,6 +3,7 @@ import QtQuick 2.15
 import "logic"
 import "model"
 import "pages"
+import "helpers"
 
 App {
     id: appRoot
@@ -77,6 +78,10 @@ App {
         id: appModel
 
         dispatcher: appLogic
+    }
+
+    WeatherDataHelper {
+        id: weatherHelper
     }
 
     Navigation {

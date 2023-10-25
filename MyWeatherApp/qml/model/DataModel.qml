@@ -7,6 +7,9 @@ Item {
     readonly property var currentLocation: internal.currentLocation
     readonly property var previousLocations: internal.previousLocations
     readonly property var geolocationSearchResults: internal.geolocationSearchResults
+    readonly property var currentWeatherCondition: internal.currentWeatherCondition
+    readonly property var hourlyForecast: internal.hourlyForecast
+    readonly property var dailyForecast: internal.dailyForecast
 
     onCurrentLocationChanged: {
         appLogic.updateWeatherData(currentLocation);
@@ -47,6 +50,8 @@ Item {
 
         function onUpdateWeatherData() {
             restAPI.getCurrentWeatherCondition(currentLocation.lat + ", " + currentLocation.lon, internal.currentWeatherConditionSuccess, internal.currentWeatherConditionError);
+            restAPI.getDailyForecast(currentLocation.lat + ", " + currentLocation.lon, internal.dailyForecastSuccess, internal.dailyForecastError);
+            restAPI.getHourlyForecast(currentLocation.lat + ", " + currentLocation.lon, internal.hourlyForecastSuccess, internal.hourlyForecastError);
         }
     }
 
@@ -60,6 +65,10 @@ Item {
         property var currentLocation: undefined
         property var previousLocations: []
         property var geolocationSearchResults: []
+        property var currentWeatherCondition
+        property var hourlyForecast
+        property var dailyForecast
+
 
         function geocodeSearchSuccess(results) {
             console.log("Geocode request success!", JSON.stringify(results));
@@ -71,11 +80,30 @@ Item {
         }
 
         function currentWeatherConditionSuccess(results) {
-            console.log("Current weather conditions request success", JSON.stringify(results));
+            console.log("Current weather conditions request success!");
+            internal.currentWeatherCondition = results;
         }
 
         function currentWeatherConditionError(err) {
-            console.log("Current weather conditions request failed!", err.message);
+            console.log("Current weather conditions request failed!", err);
+        }
+
+        function hourlyForecastSuccess(results) {
+            console.log("Hourly forecast request success!");
+            internal.hourlyForecast = results;
+        }
+
+        function hourlyForecastError(err) {
+            console.log("Hourly forecast request failed!", err);
+        }
+
+        function dailyForecastSuccess(results) {
+            console.log("Daily forecast request success!");
+            internal.dailyForecast = results;
+        }
+
+        function dailyForecastError(err) {
+            console.log("Daily forecast request failed!", err.message);
         }
     }
 }
