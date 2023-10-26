@@ -7,6 +7,9 @@ Page {
     title: "Hourly Forecast"
     backgroundColor: "transparent"
 
+    onPushed: {
+        hourlyList.model = Qt.binding(function() { return root.visible ? hourlyModel : []; })
+    }
 
     JsonListModel {
         id: hourlyModel
@@ -21,7 +24,6 @@ Page {
 
         anchors.fill: parent
         boundsBehavior: Flickable.StopAtBounds
-        model: visible ? hourlyModel : []
 
         populate: Transition {
             id: populateAnim

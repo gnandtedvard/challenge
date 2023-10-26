@@ -8,8 +8,12 @@ Page {
     title: "Daily Forecast"
     backgroundColor: "transparent"
 
+    onPushed: {
+        dailyList.model = Qt.binding(function() { return root.visible ? dailyModel : []; })
+    }
+
     JsonListModel {
-        id: hourlyModel
+        id: dailyModel
 
         source: appModel.dailyForecast.timelines.daily
         fields: ["time", "values"]
@@ -17,11 +21,10 @@ Page {
     }
 
     AppListView {
-        id: hourlyList
+        id: dailyList
 
         anchors.fill: parent
         boundsBehavior: Flickable.StopAtBounds
-        model: visible ? hourlyModel : []
 
         populate: Transition {
             id: populateAnim
@@ -35,7 +38,7 @@ Page {
         delegate: Item {
             id: hourlyItem
 
-            width: hourlyList.width
+            width: dailyList.width
             height: contentColumn.childrenRect.height
 
             Column {

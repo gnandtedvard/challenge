@@ -8,11 +8,15 @@ Page {
     title: "Options"
     backgroundColor: "transparent"
 
+    onPushed: {
+        optionsColumn.opacity = Qt.binding(function () {return root.visible ? 1 : 0})
+    }
+
     Column {
         id: optionsColumn
 
         width: parent.width
-        opacity: root.visible ? 1 : 0
+        opacity: 0
 
         Behavior on opacity {
             NumberAnimation {duration: 800; easing.type: Easing.InOutQuart}
