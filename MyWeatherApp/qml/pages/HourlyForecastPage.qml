@@ -21,7 +21,17 @@ Page {
 
         anchors.fill: parent
         boundsBehavior: Flickable.StopAtBounds
-        model: hourlyModel
+        model: visible ? hourlyModel : []
+
+        populate: Transition {
+            id: populateAnim
+            SequentialAnimation {
+                PropertyAction { property: "opacity"; value: 0.0 }
+                PauseAnimation { duration: 100 * populateAnim.ViewTransition.index }
+                NumberAnimation { property: "opacity"; from: 0.0; to: 1.0; duration: 500; easing.type: Easing.InOutQuart }
+            }
+        }
+
         delegate: Item {
             id: hourlyItem
 
@@ -63,7 +73,8 @@ Page {
                     AppText {
                         id: temperatureLabel
 
-                        text: Math.round(values.temperature) + " °C"
+                        text: Math.round(values.temperature) +
+                              (appModel.measurementUnitOption === "metric" ? " °C" : " °F")
                         fontSize: dp(15)
                         color: Theme.navigationTabBar.titleColor
                     }

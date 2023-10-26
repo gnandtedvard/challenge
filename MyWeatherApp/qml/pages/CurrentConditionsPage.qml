@@ -19,6 +19,11 @@ Page {
 
             width: parent.width
             spacing: dp(60)
+            opacity: root.visible ? 1 : 0
+
+            Behavior on opacity {
+                NumberAnimation {duration: 1000; easing.type: Easing.InOutQuart}
+            }
 
             Row {
                 id: locationRow
@@ -54,7 +59,8 @@ Page {
                 id: temperatureText
 
                 anchors.horizontalCenter: parent.horizontalCenter
-                text: !!appModel.currentWeatherCondition ? Math.round(appModel.currentWeatherCondition.data.values.temperature) + " °C" : ""
+                text: Math.round(appModel.currentWeatherCondition.data.values.temperature) +
+                      (appModel.measurementUnitOption === "metric" ? " °C" : " °F")
                 fontSize: dp(70)
                 color: Theme.navigationTabBar.titleColor
             }
@@ -95,7 +101,8 @@ Page {
                 AppText {
                     id: windSpeedLabel
 
-                    text: "Wind speed: %1 m/s".arg(appModel.currentWeatherCondition.data.values.windSpeed)
+                    text: (appModel.measurementUnitOption === "metric" ? "Wind speed: %1 m/s" : "Wind speed: %1 mph").arg(
+                              appModel.currentWeatherCondition.data.values.windSpeed)
                     fontSize: dp(16)
                     color: Theme.navigationTabBar.titleColor
                     anchors.horizontalCenter: parent.horizontalCenter
@@ -104,7 +111,7 @@ Page {
                 AppText {
                     id: visibilityLabel
 
-                    text: "Visibility: %1 km".arg(appModel.currentWeatherCondition.data.values.visibility)
+                    text: (appModel.measurementUnitOption === "metric" ? "Visibility: %1 km" : "Visibility: %1 mi").arg(appModel.currentWeatherCondition.data.values.visibility)
                     fontSize: dp(16)
                     color: Theme.navigationTabBar.titleColor
                     anchors.horizontalCenter: parent.horizontalCenter

@@ -10,6 +10,7 @@ Item {
     readonly property var currentWeatherCondition: internal.currentWeatherCondition
     readonly property var hourlyForecast: internal.hourlyForecast
     readonly property var dailyForecast: internal.dailyForecast
+    readonly property string measurementUnitOption: internal.measurementUnitOption
 
     onCurrentLocationChanged: {
         appLogic.updateWeatherData(currentLocation);
@@ -19,6 +20,9 @@ Item {
         id: logicConnection
 
         function onInitialize() {
+            if (!!appStorage.getValue(appStorage.measurementUnitOptionKey)) {
+                internal.measurementUnitOption = appStorage.getValue(appStorage.measurementUnitOptionKey);
+            }
             if (!!appStorage.getValue(appStorage.currentLocationStorageKey)) {
                 internal.currentLocation = appStorage.getValue(appStorage.currentLocationStorageKey);
             }
@@ -53,6 +57,14 @@ Item {
             restAPI.getDailyForecast(currentLocation.lat + ", " + currentLocation.lon, internal.dailyForecastSuccess, internal.dailyForecastError);
             restAPI.getHourlyForecast(currentLocation.lat + ", " + currentLocation.lon, internal.hourlyForecastSuccess, internal.hourlyForecastError);
         }
+
+        function onSetMeasurementUnitOption(option) {
+            if (internal.measurementUnitOption !== option) {
+                internal.measurementUnitOption = option;
+                appStorage.setValue(appStorage.measurementUnitOptionKey, option);
+                appLogic.updateWeatherData(root.currentLocation);
+            }
+        }
     }
 
     RestAPI {
@@ -68,7 +80,7 @@ Item {
         property var currentWeatherCondition
         property var hourlyForecast
         property var dailyForecast
-
+        property string measurementUnitOption: "metric"
 
         function geocodeSearchSuccess(results) {
             console.log("Geocode request success!", JSON.stringify(results));

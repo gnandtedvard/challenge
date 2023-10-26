@@ -33,17 +33,17 @@ Item {
     }
 
     function getCurrentWeatherCondition(address, success, error) {
-        var params = {apikey: internal.weatherApiKey, location: address, units: "metric"};
+        var params = {apikey: internal.weatherApiKey, location: address, units: appModel.measurementUnitOption};
         internal.fetch(internal.weatherCurrentConditionUrl, params,  success, error)
     }
 
     function getHourlyForecast(address, success, error) {
-        var params = {apikey: internal.weatherApiKey, location: address, units: "metric", timesteps: "1h"};
+        var params = {apikey: internal.weatherApiKey, location: address, units: appModel.measurementUnitOption, timesteps: "1h"};
         internal.fetch(internal.weatherForecastUrl, params,  success, error)
     }
 
     function getDailyForecast(address, success, error) {
-        var params = {apikey: internal.weatherApiKey, location: address, units: "metric", timesteps: "1d"};
+        var params = {apikey: internal.weatherApiKey, location: address, units: appModel.measurementUnitOption, timesteps: "1d"};
         internal.fetch(internal.weatherForecastUrl, params,  success, error)
     }
 }

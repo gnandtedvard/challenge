@@ -11,4 +11,6 @@ Item {
     signal updateCurrentLocation(var location)
 
     signal updateWeatherData()
+
+    signal setMeasurementUnitOption(string option)
 }

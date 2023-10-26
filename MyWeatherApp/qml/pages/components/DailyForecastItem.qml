@@ -21,7 +21,7 @@ Column {
         id: temperatureText
 
         anchors.horizontalCenter: parent.horizontalCenter
-        text: "%1 °C".arg(root.temperatureValue)
+        text: (appModel.measurementUnitOption === "metric" ? "%1 °C" : "%1 °F").arg(root.temperatureValue)
         fontSize: dp(20)
         color: Theme.navigationTabBar.titleColor
     }

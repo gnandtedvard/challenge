@@ -10,6 +10,9 @@ App {
 
     Component.onCompleted: {
         appLogic.initialize();
+        if (!appModel.currentLocation) {
+            searchLocationModal.open();
+        }
     }
 
     onInitTheme: {
@@ -72,6 +75,7 @@ App {
         readonly property string previousLocationsStorageKey: "prevLocations"
         readonly property int maxPreviousLocationsCount: 5
         readonly property string currentLocationStorageKey: "currentLocation"
+        readonly property string measurementUnitOptionKey: "measurementUnit"
     }
 
     DataModel {
@@ -89,44 +93,46 @@ App {
 
         navigationMode: navigationModeTabs
         tabs.showIcon: false
+        width: parent.width
+        height: parent.height
 
         NavigationItem {
             title: "Current"
 
             NavigationStack {
-                initialPage: CurrentConditionsPage { }
+                initialPage: CurrentConditionsPage {}
             }
         }
 
         NavigationItem {
-            title: qsTr("Hourly")
+            title: "Hourly"
 
             NavigationStack {
-                initialPage: HourlyForecastPage { }
+                initialPage: HourlyForecastPage {}
             }
         }
 
         NavigationItem {
-            title: qsTr("Daily")
+            title: "Daily"
 
             NavigationStack {
-                initialPage: DailyForecastPage { }
+                initialPage: DailyForecastPage {}
             }
         }
 
         NavigationItem {
-            title: qsTr("Options")
+            title: "Options"
 
             NavigationStack {
-                initialPage: OptionsPage { }
+                initialPage: OptionsPage {}
             }
         }
     }
 
     SearchLocationModal {
-      id: searchLocationModal
+        id: searchLocationModal
 
-      modalHeight: appRoot.height
+        modalHeight: appRoot.height
     }
 
 
