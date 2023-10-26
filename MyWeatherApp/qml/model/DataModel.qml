@@ -13,6 +13,7 @@ Item {
     readonly property string measurementUnitOption: internal.measurementUnitOption
 
     onCurrentLocationChanged: {
+        // Weather data must be retrieved when current location changes
         appLogic.updateWeatherData(currentLocation);
     }
 
@@ -83,7 +84,7 @@ Item {
         property string measurementUnitOption: "metric"
 
         function geocodeSearchSuccess(results) {
-            console.log("Geocode request success!", JSON.stringify(results));
+            console.log("Geocode request success!");
             internal.geolocationSearchResults = results;
         }
 

@@ -10,6 +10,8 @@ App {
 
     Component.onCompleted: {
         appLogic.initialize();
+
+        // If there is no current location set (first startup or storage reset) the current location has to be set up.
         if (!appModel.currentLocation) {
             searchLocationModal.open();
         }
@@ -24,6 +26,8 @@ App {
 
 
     Rectangle {
+        id: appBackground
+
         anchors.fill: parent
 
         gradient: Gradient {

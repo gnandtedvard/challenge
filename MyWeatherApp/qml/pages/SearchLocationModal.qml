@@ -2,25 +2,25 @@ import Felgo 3.0
 import QtQuick 2.0
 
 AppModal {
-  id: root
+    id: root
 
-  pushBackContent: navigation
+    pushBackContent: navigation
 
-  fullscreen: false
+    fullscreen: false
 
-  NavigationStack {
-    id: navigationStack
+    NavigationStack {
+        id: navigationStack
 
-    initialPage: LocationInputPage {
-      id: inputPage
+        initialPage: LocationInputPage {
+            id: inputPage
+        }
     }
-  }
 
-  onClosed: {
-    inputPage.reset()
-  }
+    onClosed: {
+        inputPage.reset()
+    }
 
-  onOpened: {
-    inputPage.openKeyboard()
-  }
+    onOpened: {
+        inputPage.openKeyboard()
+    }
 }

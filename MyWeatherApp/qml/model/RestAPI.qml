@@ -2,25 +2,27 @@ import QtQuick 2.15
 import Felgo 3.0
 
 Item {
+    id: root
 
-    readonly property bool busy: HttpNetworkActivityIndicator.enabled
     property int maxRequestTimeout: 5000
-
-    Component.onCompleted: {
-        HttpNetworkActivityIndicator.setActivationDelay(0)
-    }
 
     QtObject {
         id: internal
+
+        // Weather API data.
+        // DISCLAIMER: Weather API accepts only 25 calls/hour using a free account.
         property string weatherApiKey: "qpRPO6BW4TzdxnpGq0ZVYlnXVcDwI66j"
         property string weatherForecastUrl: "https://api.tomorrow.io/v4/weather/forecast"
         property string weatherCurrentConditionUrl: "https://api.tomorrow.io/v4/weather/realtime"
+
+        // Geocode API data.
+        // DISCLAIMER: Geocode API accepts at most 1 request/second
         property string geocodeSearchUrl: "https://geocode.maps.co/search"
 
         function fetch(url, params, success, error) {
             HttpRequest.get(url)
             .query(params)
-            .timeout(maxRequestTimeout)
+            .timeout(root.maxRequestTimeout)
             .accept('application/json')
             .then(function(res) { success(res.body) })
             .catch(function(err) { error(err) });

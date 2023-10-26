@@ -46,6 +46,7 @@ Page {
 
                 spacing: dp(5)
                 width: parent.width
+
                 AppText {
                     id: timeLabel
 

@@ -7,7 +7,13 @@ Page {
     title: "Current Weather"
     backgroundColor: "transparent"
 
+    onPushed: {
+        mainColumn.opacity = Qt.binding(function () {return root.visible ? 1 : 0})
+    }
+
     AppFlickable {
+        id: contentFlickable
+
         anchors.fill: parent
         anchors.margins: dp(20)
         boundsBehavior: Flickable.StopAtBounds
@@ -19,7 +25,7 @@ Page {
 
             width: parent.width
             spacing: dp(60)
-            opacity: root.visible ? 1 : 0
+            opacity: 0
 
             Behavior on opacity {
                 NumberAnimation {duration: 1000; easing.type: Easing.InOutQuart}

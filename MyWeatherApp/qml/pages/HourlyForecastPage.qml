@@ -8,7 +8,7 @@ Page {
     backgroundColor: "transparent"
 
     onPushed: {
-        hourlyList.model = Qt.binding(function() { return root.visible ? hourlyModel : []; })
+        hourlyList.model = Qt.binding(function() { return root.visible ? dailyModel : []; })
     }
 
     JsonListModel {

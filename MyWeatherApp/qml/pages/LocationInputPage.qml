@@ -7,11 +7,11 @@ Page {
     title: "Set up location"
 
     leftBarItem: IconButtonBarItem {
-      icon: IconType.close
+        icon: IconType.close
 
-      onClicked: {
-        searchLocationModal.close()
-      }
+        onClicked: {
+            searchLocationModal.close()
+        }
     }
 
     AppTextField {
@@ -57,6 +57,8 @@ Page {
         }
     }
 
+    // Geocode API supports at most 1 request/second
+    // Using this timer will limit the number of requests while typing
     Timer {
         id: searchTriggerTimer
 
@@ -65,6 +67,7 @@ Page {
         repeat: false
 
         onTriggered: {
+            // Another limitation of the API is that the input lenght must be at least 3 characters long
             if (textInput.text.length >= 3) {
                 appLogic.geocodeSearch(textInput.text);
             }
