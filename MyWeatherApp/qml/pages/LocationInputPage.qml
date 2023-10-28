@@ -8,6 +8,7 @@ Page {
 
     leftBarItem: IconButtonBarItem {
         icon: IconType.close
+        visible: !!appModel.currentLocation
 
         onClicked: {
             searchLocationModal.close()
